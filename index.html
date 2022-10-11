@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Book-shop</title>
+        <!-- font awesome -->
+        <script
+            src="https://kit.fontawesome.com/1cf5f9e0b4.js"
+            crossorigin="anonymous"
+        ></script>
+        <link rel="stylesheet" href="css/main.css" />
+    </head>
+    <body onload="onInit()">
+        <div class="switch-container">
+            <i
+                onclick="onSwitchDisplay(this)"
+                class="fa-solid fa-circle-user cards"
+                id="cards"
+            ></i>
+
+            <i
+                onclick="onSwitchDisplay(this)"
+                class="fa-solid fa-table-list table selected"
+                id="table"
+            ></i>
+        </div>
+        <header>
+            <h1>Book Shop</h1>
+        </header>
+        <section class="book-filters">
+            <label>
+                Max Price:
+
+                <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    value="100"
+                    class="filter-price-range"
+                    onchange="this.title=this.value;onSetFilterBy({maxPrice:this.value})"
+                />
+            </label>
+            <label>
+                Min Rate:
+
+                <input
+                    type="range"
+                    min="0"
+                    max="10"
+                    value="0"
+                    class="filter-rate-range"
+                    onchange="this.title=this.value;onSetFilterBy({minRate:this.value})"
+                />
+            </label>
+        </section>
+        <br />
+        <input
+            class="search"
+            type="text"
+            oninput="onSetFilterByTxt(this.value)"
+            placeholder="Search for a Title..."
+        />
+
+        <div class="add-book-modal"></div>
+        <button class="add-btn" onclick="onOpenAddModal()">
+            Create New Book
+        </button>
+        <div class="paging">
+            <button class="prev" onclick="onPrevPage()">Prev Page</button>
+            <button class="paging-display">1</button>
+            <button class="next" onclick="onNextPage()">Next Page</button>
+        </div>
+        <article class="add-modal">
+            <h2>Add a book</h2>
+            <form onsubmit="onAddBook(event)">
+                <input
+                    type="text"
+                    name="title"
+                    class="add-title"
+                    placeholder="Title..."
+                />
+                <br />
+                <input
+                    type="number"
+                    name="price"
+                    min="10"
+                    class="add-price"
+                    placeholder="Price..."
+                />
+                <br />
+                <button class="add-book-btn">Add</button>
+                <button onclick="onCloseAddModal()" class="cancel-btn">
+                    X
+                </button>
+            </form>
+        </article>
+
+        <article class="update-modal">
+            <h3>Update book's price</h3>
+            <form onsubmit="onUpdateBook(event)">
+                <input
+                    type="number"
+                    name="updated-price"
+                    min="10"
+                    placeholder="New price..."
+                />
+                <br />
+                <button class="update-price-btn">Update</button>
+                <button onclick="onCloseUpdateModal()" class="cancel-btn">
+                    X
+                </button>
+            </form>
+        </article>
+        <article class="read-modal">
+            <h2>title</h2>
+            <div class="img-container">
+                <img src="./img/book.png" alt="book cover" />
+            </div>
+            <p>price: <span>20</span>$</p>
+            <p class="description">
+                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                Similique tempora animi perferendis expedita deserunt
+                voluptatibus accusantium eum. Deserunt accusamus voluptas illum!
+                Doloribus voluptatem fugiat eum porro similique, iure tempora
+                labore perspiciatis neque quas, voluptate ducimus dolorem
+                officia impedit provident nobis! Quam molestiae voluptas fugit
+                error debitis, ut quidem delectus rerum.
+            </p>
+            <h4>Rate book</h4>
+            <div class="rate">
+                <button class="dec-rate" onclick="onChangeRate(-1)">-</button>
+                <span>0</span>
+                <button class="add-rate" onclick="onChangeRate(1)">+</button>
+            </div>
+            <button onclick="onCloseReadModal()" class="cancel-btn">X</button>
+        </article>
+        <section class="books-container"></section>
+        <script src="js/services/util.service.js"></script>
+        <script src="js/services/storage.service.js"></script>
+        <script src="js/services/book.service.js"></script>
+        <script src="js/book.controller.js"></script>
+    </body>
+</html>
