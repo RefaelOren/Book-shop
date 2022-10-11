@@ -76,7 +76,7 @@ function updateBook(bookId, newPrice) {
 }
 
 function deleteBook(bookId) {
-    const bookIdx = gBooks.findIndex((book) => (bookId = book.id));
+    const bookIdx = gBooks.findIndex((book) => bookId === book.id);
     gBooks.splice(bookIdx, 1);
     _saveBooksToStorage();
 }

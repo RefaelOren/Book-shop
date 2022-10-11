@@ -63,12 +63,14 @@ h1 {
 }
 
 .paging {
+    position: relative;
     margin: 1rem;
     transition: 1s;
 }
 
-.hide {
-    transform: translate(150%);
+.paging.hide {
+    left: -100%;
+    transition: 1s;
 }
 
 .paging button {
