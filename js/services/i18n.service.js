@@ -42,8 +42,8 @@ const gTrans = {
         he: 'מחיר...',
     },
     'update-title': {
-        en: `Update book's price`,
-        he: 'עדכן מחיר הספר',
+        en: `Update price`,
+        he: 'עדכן מחיר',
     },
     'update-price-placeholder': {
         en: 'New price...',
