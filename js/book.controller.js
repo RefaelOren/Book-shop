@@ -68,9 +68,10 @@ function onUpdateBook(ev) {
 
 function onReadBook(bookId) {
     var book = getBookById(bookId);
+    console.log(book.price);
     var elReadModal = document.querySelector('.read-modal');
     elReadModal.querySelector('h2').innerText = book.name;
-    elReadModal.querySelector('p span').innerText = book.price;
+    elReadModal.querySelector('h3').innerText = book.price + '$';
     elReadModal.querySelector('.description').innerText = book.description;
     elReadModal.querySelector('.rate span').innerText = book.rate;
     elReadModal.querySelector(
@@ -78,6 +79,7 @@ function onReadBook(bookId) {
     ).innerHTML = `<img onerror="this.src='img/book.png'" src="img/${book.imgUrl}" alt="book cover"> `;
     elReadModal.classList.add('open');
     gReadBookId = bookId;
+    doTrans();
 }
 
 function onOpenUpdateBookModal(bookId) {
@@ -144,27 +146,27 @@ function getStrHTML(books) {
     if (gSwitchDisplay === 'table') {
         var strTableHTML = books.map(
             (book) => `
-                <tr>
+                <tr class="table-light">
                     <td>${book.id}</td>
                     <td>${book.rate}</td>
                     <td>${book.name}</td>
                     <td>${book.price}$</td>
                     <td class="action-btns">
-                         <button class="read-btn" onclick="onReadBook('${book.id}')">Read</button>
-                         <button class="update-btn" onclick="onOpenUpdateBookModal('${book.id}')">Update</button>
-                         <button class="delete-btn" onclick="onDeleteBook('${book.id}')">Delete</button>
+                         <button class="read-btn" onclick="onReadBook('${book.id}')" data-trans="read-btn">Read</button>
+                         <button class="update-btn" onclick="onOpenUpdateBookModal('${book.id}')" data-trans="update-btn">Update</button>
+                         <button class="delete-btn" onclick="onDeleteBook('${book.id}')" data-trans="delete-btn">Delete</button>
                     </td>
                 </tr>
     `
         );
         const tableHead = `
-            <table>
-                <tr>
-                    <th>ID</th>
-                    <th>Rate</th>
-                    <th>Title</th>
-                    <th>Price</th>
-                    <th class="action-btns">Action</th>
+            <table class="table table-bordered">
+                <tr class="table-primary">
+                    <th data-trans="table-id" class="table-id">ID</th>
+                    <th data-trans="table-rate">Rate</th>
+                    <th data-trans="table-title">Title</th>
+                    <th data-trans="table-price">Price</th>
+                    <th data-trans="action-btns" class="action-btns ">Action</th>
                 </tr>
     `;
         strTableHTML = tableHead + strTableHTML.join('') + '</table>';
@@ -180,18 +182,19 @@ function getStrHTML(books) {
                     <div class="img-container">
                         <img onerror="this.src='img/book.png'" src="img/${book.imgUrl}" alt="book cover">
                     </div>
-                    <p class="price">Price: <span>${book.price}</span>$</p>
-                    <p class="rating">Rating: <span>${book.rate}</span></p>
-                    <button class="read-btn" onclick="onReadBook('${book.id}')">
+                    <p class="price" data-trans="read-price">Price: $<span>${book.price}</span></p>
+                    <p class="rating" data-trans="rate-cards">Rating: <span>${book.rate}</span></p>
+                    <button class="read-btn" onclick="onReadBook('${book.id}')"
+                    data-trans="read-btn">
                     Read
                     </button>
                     <button
                         class="update-btn"
-                        onclick="onOpenUpdateBookModal('${book.id}')"
+                        onclick="onOpenUpdateBookModal('${book.id}')" data-trans="update-btn"
                     >
                     Update
                     </button>
-                    <button class="delete-btn" onclick="onDeleteBook('${book.id}')">
+                    <button class="delete-btn" onclick="onDeleteBook('${book.id}')" data-trans="delete-btn">
                         Delete
                     </button>
                     </article>            
@@ -200,7 +203,9 @@ function getStrHTML(books) {
             )
             .join('');
         strCardsHTML =
-            `<section class="book-cards">` + strCardsHTML + `</section>`;
+            `<section class="book-cards container text-center">` +
+            strCardsHTML +
+            `</section>`;
         return strCardsHTML;
     }
 }
@@ -208,11 +213,13 @@ function getStrHTML(books) {
 function onNextPage() {
     nextPage();
     renderBooks();
+    doTrans();
 }
 
 function onPrevPage() {
     prevPage();
     renderBooks();
+    doTrans();
 }
 
 function updatePageDisplay(pageIdx) {
@@ -248,4 +255,16 @@ function showPagingPanel() {
 
 function hidePagingPanel() {
     document.querySelector('.paging').classList.add('hide');
+}
+
+function onSetLang(lang) {
+    setLang(lang);
+    setDirection(lang);
+    renderBooks();
+    doTrans();
+}
+
+function setDirection(lang) {
+    if (lang === 'he') document.body.classList.add('rtl');
+    else document.body.classList.remove('rtl');
 }

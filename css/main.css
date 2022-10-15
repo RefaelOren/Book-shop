@@ -1,20 +1,61 @@
-body {
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+body {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     text-align: center;
-    background-color: lavender;
+    background-color: rgb(237, 234, 234);
+}
+
+h1 {
+    padding: 0.5rem;
+}
+
+body.rtl {
+    direction: rtl;
+}
+
+header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    color: white;
+    background: url('../img/header.webp') no-repeat center/cover;
+    height: 15vh;
+    margin-bottom: 0.5rem;
+    -webkit-box-shadow: 5px 5px 19px 7px rgba(0, 0, 0, 0.76);
+    box-shadow: 5px 5px 19px 7px rgba(0, 0, 0, 0.76);
+}
+
+.header-animation {
+    transform: translateY(-20px);
+    width: 160px;
+    margin: 0 auto;
+}
+
+.trans-container {
+    margin: 1rem;
+    position: fixed;
+    top: 0;
+    right: 0;
+}
+
+select {
+    padding: 0.2rem 0.5rem;
+    border-radius: 5px;
 }
 
 .switch-container {
-    position: absolute;
+    position: fixed;
     left: 0;
     top: 1rem;
+    font-size: 1.5rem;
 }
 
 i {
-    font-size: 2rem;
     color: rgb(87, 179, 210);
     cursor: pointer;
     padding: 0.5rem;
@@ -22,27 +63,33 @@ i {
     transition: 0.5s;
 }
 
-.selected {
+i.table {
+    width: 2.5rem;
+    color: rgb(87, 179, 210);
+}
+
+i.selected {
     background: rgb(87, 179, 210);
     color: white;
 }
 
-h1 {
-    margin-top: 1rem;
-}
-
 .book-filters {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
     width: 80%;
-    margin: 1em auto;
+    margin: 2em auto;
+}
+
+.book-filters span {
+    margin: 0 0.5rem;
+    font-weight: 700;
 }
 
 .search {
     margin-bottom: 0.5rem;
     padding: 0.4rem 0.8rem;
     font-size: 1rem;
-    border: none;
+    border: 2px solid lightgrey;
     border-radius: 10px;
 }
 
@@ -90,12 +137,13 @@ h1 {
 }
 
 .paging .paging-display {
-    background: white;
+    background: rgb(225, 222, 222);
     color: black;
 }
 
 .add-modal {
-    position: absolute;
+    padding-top: 1rem;
+    position: fixed;
     display: flex;
     flex-direction: column;
     height: 30vh;
@@ -105,7 +153,8 @@ h1 {
     border-top-right-radius: 20px;
     box-shadow: 5px 5px 20px 8px #000000;
     transition: 1s;
-    left: -100%;
+    top: 20vh;
+    left: 200%;
 }
 
 .add-modal input {
@@ -141,16 +190,17 @@ h1 {
 .update-modal {
     position: fixed;
     display: flex;
+    padding-top: 1rem;
     flex-direction: column;
-    height: 20vh;
+    height: 22vh;
     min-width: 300px;
     background-color: rgb(146, 87, 233);
     border-bottom-right-radius: 20px;
     border-top-right-radius: 20px;
     box-shadow: 5px 5px 20px 8px #000000;
     transition: 1s;
-    top: 40vh;
-    left: -100%;
+    top: 20vh;
+    left: 200%;
 }
 
 .update-modal input {
@@ -191,9 +241,9 @@ h1 {
 }
 
 .img-container {
-    width: 75px;
-    height: 100px;
-    margin: 0 auto;
+    width: 150px;
+    height: 200px;
+    margin: 1rem auto;
 }
 
 .read-modal img {
@@ -222,15 +272,17 @@ h1 {
 }
 
 .rate .add-rate {
-    border-bottom-right-radius: 10px;
-    border-top-right-radius: 10px;
+    border-start-end-radius: 10px;
+    border-end-end-radius: 10px;
+    /* border-top-right-radius: 10px; */
 }
 .rate .dec-rate {
-    border-bottom-left-radius: 10px;
-    border-top-left-radius: 10px;
+    border-start-start-radius: 10px;
+    border-end-start-radius: 10px;
 }
 
 .cancel-btn {
+    width: 2rem;
     background-color: red;
     color: white;
     position: absolute;
@@ -238,6 +290,7 @@ h1 {
     right: 1rem;
     cursor: pointer;
     font-weight: 900;
+    border-radius: 5px;
 }
 
 .open {
@@ -245,15 +298,17 @@ h1 {
 }
 
 .books-container {
-    min-width: 360px;
+    width: 100vw;
+    margin: 0 auto;
 }
 
 .books-container button {
     border: none;
     border-radius: 5px;
-    font-size: 13px;
+    font-size: 0.6rem;
     cursor: pointer;
     color: white;
+    padding: 5px 8px;
 }
 
 .read-btn {
@@ -272,6 +327,9 @@ h1 {
 table {
     width: 100%;
     background: rgb(203, 203, 248);
+    font-size: 0.6rem;
+    -webkit-box-shadow: 5px 5px 19px 7px rgba(0, 0, 0, 0.76);
+    box-shadow: 5px 5px 19px 7px rgba(0, 0, 0, 0.76);
 }
 
 th {
@@ -286,17 +344,25 @@ td {
 
 td.action-btns {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-around;
+}
+
+td button {
+    display: flex;
+    flex-basis: 3rem;
+    justify-content: center;
 }
 
 .book-cards {
     display: grid;
+    min-width: 90vw;
+    margin: 0 auto;
 }
 
 .book-card {
+    width: 15rem;
     margin: 1rem auto;
     padding: 1rem 2rem;
-
     background: white;
     border-radius: 20px;
     -webkit-box-shadow: 5px 5px 19px 7px rgba(0, 0, 0, 0.76);
@@ -304,9 +370,9 @@ td.action-btns {
 }
 
 .book-card .img-container {
-    width: 75px;
-    height: 100px;
-    margin: 0 auto;
+    width: 100px;
+    height: 150px;
+    margin: 1rem auto;
     -webkit-box-shadow: 5px 5px 19px 7px rgba(0, 0, 0, 0.76);
     box-shadow: 5px 5px 19px 7px rgba(0, 0, 0, 0.76);
 }
@@ -319,6 +385,17 @@ td.action-btns {
 @media screen and (min-width: 600px) {
     .book-cards {
         grid-template-columns: 1fr 1fr;
+        gap: 30px;
+    }
+    .books-container {
+        max-width: 90vw;
+        margin: 0 auto;
+    }
+    table {
+        font-size: 1rem;
+    }
+    .books-container button {
+        font-size: 0.8rem;
     }
 }
 
@@ -332,4 +409,17 @@ td.action-btns {
     .book-cards {
         grid-template-columns: 1fr 1fr 1fr 1fr;
     }
+}
+
+.carous-container {
+    max-width: 350px;
+    margin: 2rem auto;
+    z-index: -1;
+    -webkit-box-shadow: 5px 5px 19px 7px rgba(0, 0, 0, 0.76);
+    box-shadow: 5px 5px 19px 7px rgba(0, 0, 0, 0.76);
+    border-radius: 10px;
+}
+
+.carousel-item img {
+    border-radius: 10px;
 }
