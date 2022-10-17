@@ -148,9 +148,15 @@ function renderFilterByQueryStringParams() {
     document.querySelector('select').value = currLang;
     console.log(readModalStat);
     console.log(getReadModalStat());
-    if (getReadModalStat()) renderReadBook(getReadBookId());
-    else onCloseAddModal();
+    if (getReadModalStat()) {
+        renderReadBook(getReadBookId());
+    } else onCloseAddModal();
     setLang(currLang);
+    setDirection(currLang);
+    doTrans();
+    document.querySelector('.read-modal h3').innerHTML = getPrice(
+        getBookById(getReadBookId()).price
+    );
 }
 
 function renderBooks() {
@@ -279,7 +285,6 @@ function onSwitchDisplay(elBtn) {
         .forEach((btn) => btn.classList.toggle('selected'));
     gSwitchDisplay = elBtn.id;
     renderBooks();
-    // doTrans();
 }
 
 function showPagingPanel() {
@@ -295,6 +300,9 @@ function onSetLang(lang) {
     setDirection(lang);
     setQueryParams();
     renderBooks();
+    document.querySelector('.read-modal h3').innerHTML = getPrice(
+        getBookById(getReadBookId()).price
+    );
 }
 
 function setDirection(lang) {

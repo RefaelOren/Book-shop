@@ -240,6 +240,7 @@ i.selected {
     left: -110%;
     top: 10%;
     padding-bottom: 1rem;
+    z-index: 5;
 }
 
 .img-container {
