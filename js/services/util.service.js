@@ -16,7 +16,7 @@ function makeId(length = 6) {
     return txt;
 }
 
-function makeLorem(wordCount = 50) {
+function makeLorem(wordCount = 30) {
     const words = [
         'The sky',
         'above',

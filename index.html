@@ -27,7 +27,7 @@
                     src="https://assets5.lottiefiles.com/packages/lf20_anlbpxrk.json"
                     background="transparent"
                     speed="1"
-                    style="width: 150px; height: 120px"
+                    style="width: 120px; height: 120px"
                     autoplay
                     loop
                 ></lottie-player>
@@ -81,7 +81,6 @@
             oninput="onSetFilterByTxt(this.value)"
             placeholder="Search for a Title..."
         />
-
         <div class="add-book-modal"></div>
         <button
             class="add-btn"
@@ -171,6 +170,14 @@
         </article>
         <section class="books-container"></section>
         <br />
+        <button
+            type="button"
+            class="btn btn-info my-3"
+            onclick="onCopyURL()"
+            data-trans="copy-url"
+        >
+            Copy Current Page URL
+        </button>
         <h3 data-trans="best-features">Best Features</h3>
         <!-- carousel -->
         <div style="z-index: -1" class="carous-container">
@@ -255,6 +262,7 @@
                 </button>
             </div>
         </div>
+
         <!-- animation -->
         <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
         <!-- bootstrap -->

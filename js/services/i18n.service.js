@@ -94,12 +94,16 @@ const gTrans = {
         he: 'מחק',
     },
     'rate-cards': {
-        en: 'Rating',
-        he: 'דירוג',
+        en: 'Rating:',
+        he: ':דירוג',
     },
     'best-features': {
         en: 'Best Features',
         he: 'המומלצים באתר',
+    },
+    'copy-url': {
+        en: 'Copy Current Page URL',
+        he: 'העתק כתובת אתר נוכחית',
     },
 };
 
@@ -125,4 +129,8 @@ function doTrans() {
 
 function setLang(lang) {
     gCurrLang = lang;
+}
+
+function getCurrLang() {
+    return gCurrLang;
 }

@@ -1,17 +1,16 @@
-* {
+body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}
-
-body {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     text-align: center;
     background-color: rgb(237, 234, 234);
 }
 
 h1 {
+    width: 40%;
     padding: 0.5rem;
+    margin: 0 auto;
 }
 
 body.rtl {
@@ -24,23 +23,23 @@ header {
     left: 0;
     color: white;
     background: url('../img/header.webp') no-repeat center/cover;
-    height: 15vh;
+    width: 100%;
+    height: 20vh;
     margin-bottom: 0.5rem;
     -webkit-box-shadow: 5px 5px 19px 7px rgba(0, 0, 0, 0.76);
     box-shadow: 5px 5px 19px 7px rgba(0, 0, 0, 0.76);
 }
 
 .header-animation {
-    transform: translateY(-20px);
-    width: 160px;
+    width: 120px;
     margin: 0 auto;
+    transform: translateY(-20px);
 }
 
 .trans-container {
-    margin: 1rem;
     position: fixed;
-    top: 0;
-    right: 0;
+    top: 1rem;
+    right: 1rem;
 }
 
 select {
@@ -50,7 +49,7 @@ select {
 
 .switch-container {
     position: fixed;
-    left: 0;
+    left: 1rem;
     top: 1rem;
     font-size: 1.5rem;
 }
@@ -76,13 +75,17 @@ i.selected {
 .book-filters {
     display: flex;
     justify-content: center;
-    width: 80%;
-    margin: 2em auto;
+    width: 90%;
+    margin: 1.5rem auto 0 auto;
+}
+
+.book-filters input {
+    width: 100%;
 }
 
 .book-filters span {
     margin: 0 0.5rem;
-    font-weight: 700;
+    font-weight: 500;
 }
 
 .search {
@@ -111,13 +114,12 @@ i.selected {
 
 .paging {
     position: relative;
-    margin: 1rem;
+    margin: 1rem auto;
     transition: 1s;
 }
 
 .paging.hide {
-    left: -100%;
-    transition: 1s;
+    display: none;
 }
 
 .paging button {
@@ -146,7 +148,7 @@ i.selected {
     position: fixed;
     display: flex;
     flex-direction: column;
-    height: 30vh;
+    height: 250px;
     min-width: 300px;
     background-color: rgb(118, 118, 249);
     border-bottom-right-radius: 20px;
@@ -192,9 +194,9 @@ i.selected {
     display: flex;
     padding-top: 1rem;
     flex-direction: column;
-    height: 22vh;
+    height: 170px;
     min-width: 300px;
-    background-color: rgb(146, 87, 233);
+    background-color: orange;
     border-bottom-right-radius: 20px;
     border-top-right-radius: 20px;
     box-shadow: 5px 5px 20px 8px #000000;
@@ -217,7 +219,7 @@ i.selected {
     font-weight: 700;
     border-radius: 5px;
     cursor: pointer;
-    background: rgb(51, 51, 242);
+    background: rgb(158, 100, 6);
     color: white;
     transition: 0.5s;
 }
@@ -298,7 +300,7 @@ i.selected {
 }
 
 .books-container {
-    width: 100vw;
+    width: 90%;
     margin: 0 auto;
 }
 
@@ -328,8 +330,6 @@ table {
     width: 100%;
     background: rgb(203, 203, 248);
     font-size: 0.6rem;
-    -webkit-box-shadow: 5px 5px 19px 7px rgba(0, 0, 0, 0.76);
-    box-shadow: 5px 5px 19px 7px rgba(0, 0, 0, 0.76);
 }
 
 th {
@@ -355,12 +355,12 @@ td button {
 
 .book-cards {
     display: grid;
-    min-width: 90vw;
+    width: 100%;
     margin: 0 auto;
 }
 
 .book-card {
-    width: 15rem;
+    width: 16rem;
     margin: 1rem auto;
     padding: 1rem 2rem;
     background: white;
@@ -387,6 +387,12 @@ td button {
         grid-template-columns: 1fr 1fr;
         gap: 30px;
     }
+    .book-filters {
+        max-width: 500px;
+    }
+    .book-filters input {
+        margin-inline-end: 2rem;
+    }
     .books-container {
         max-width: 90vw;
         margin: 0 auto;
@@ -399,7 +405,7 @@ td button {
     }
 }
 
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 992px) {
     .book-cards {
         grid-template-columns: 1fr 1fr 1fr;
     }
@@ -412,9 +418,9 @@ td button {
 }
 
 .carous-container {
-    max-width: 350px;
+    max-width: 300px;
     margin: 2rem auto;
-    z-index: -1;
+
     -webkit-box-shadow: 5px 5px 19px 7px rgba(0, 0, 0, 0.76);
     box-shadow: 5px 5px 19px 7px rgba(0, 0, 0, 0.76);
     border-radius: 10px;

@@ -1,6 +1,8 @@
 'use strict';
 
 const STORAGE_KEY = 'bookDB';
+const BOOK_ID_KEY = 'bookIdDB';
+const READ_MODAL_STAT_KEY = 'readModalStatDB';
 const PAGE_SIZE = 5;
 var gPageIdx = 0;
 
@@ -8,6 +10,7 @@ var gBooks;
 var gFilterBy = { maxPrice: 100, minRate: 0, txt: '' };
 var gUpdatedBookId;
 var gReadBookId;
+var gIsReadModalOpen;
 
 _createBooks();
 
@@ -67,7 +70,6 @@ function updateRate(bookId, diff) {
 }
 
 function updateBook(bookId, newPrice) {
-    console.log(bookId);
     const book = gBooks.find((book) => bookId === book.id);
     if (newPrice === book.price) return;
     book.price = newPrice;
@@ -93,6 +95,41 @@ function addBook(title, price) {
 function getBookById(bookId) {
     const book = gBooks.find((book) => bookId === book.id);
     return book;
+}
+
+function getFilterBy() {
+    return gFilterBy;
+}
+
+function setUpdatedBookId(bookId) {
+    gUpdatedBookId = bookId;
+}
+
+function getUpdatedBookId() {
+    return gUpdatedBookId;
+}
+
+function getPrice(price) {
+    price = gCurrLang === 'en' ? `$ ${price}` : `${price * 3} &#8362;`;
+    return price;
+}
+
+function setReadBookId(bookId) {
+    gReadBookId = bookId;
+    saveToStorage(BOOK_ID_KEY, gReadBookId);
+}
+
+function getReadBookId() {
+    return loadFromStorage(BOOK_ID_KEY);
+}
+
+function getReadModalStat() {
+    return loadFromStorage(READ_MODAL_STAT_KEY);
+}
+
+function setReadModalStat(isOpen) {
+    gIsReadModalOpen = isOpen;
+    saveToStorage(READ_MODAL_STAT_KEY, gIsReadModalOpen);
 }
 
 function _createBooks() {

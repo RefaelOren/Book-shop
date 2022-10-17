@@ -5,26 +5,28 @@ var gSwitchDisplay = 'table';
 function onInit() {
     renderFilterByQueryStringParams();
     renderBooks();
+    doTrans();
 }
 
 function onSetFilterBy(filterBy) {
     filterBy = setBookFilter(filterBy);
     renderBooks();
-    const queryStringParams = `?maxPrice=${filterBy.maxPrice}&minRate=${filterBy.minRate}&txt=${filterBy.txt}`;
-    const newUrl =
-        window.location.protocol +
-        '//' +
-        window.location.host +
-        window.location.pathname +
-        queryStringParams;
-    window.history.pushState({ path: newUrl }, '', newUrl);
+    setQueryParams();
 }
 
 function onSetFilterByTxt(txt) {
     setBookFilter(txt);
     gFilterBy.txt = txt;
     renderBooks();
-    const queryStringParams = `?maxPrice=${gFilterBy.maxPrice}&minRate=${gFilterBy.minRate}&txt=${gFilterBy.txt}`;
+    setQueryParams();
+}
+
+function setQueryParams() {
+    const queryStringParams = `?maxPrice=${getFilterBy().maxPrice}&minRate=${
+        getFilterBy().minRate
+    }&txt=${
+        getFilterBy().txt
+    }&lang=${getCurrLang()}&modal=${getReadModalStat()}`;
     const newUrl =
         window.location.protocol +
         '//' +
@@ -60,31 +62,35 @@ function onUpdateBook(ev) {
     ev.preventDefault();
     const bookPrice = document.querySelector('[name=updated-price]').value;
     if (!bookPrice) return;
-    var bookId = gUpdatedBookId;
+    var bookId = getUpdatedBookId();
     updateBook(bookId, bookPrice);
     document.querySelector('.update-modal').classList.remove('open');
     renderBooks();
 }
 
 function onReadBook(bookId) {
+    setReadBookId(bookId);
+    setReadModalStat(true);
+    renderReadBook(bookId);
+    setQueryParams();
+}
+
+function renderReadBook(bookId) {
     var book = getBookById(bookId);
-    console.log(book.price);
     var elReadModal = document.querySelector('.read-modal');
     elReadModal.querySelector('h2').innerText = book.name;
-    elReadModal.querySelector('h3').innerText = book.price + '$';
+    elReadModal.querySelector('h3').innerHTML = getPrice(book.price);
     elReadModal.querySelector('.description').innerText = book.description;
     elReadModal.querySelector('.rate span').innerText = book.rate;
     elReadModal.querySelector(
         '.img-container'
     ).innerHTML = `<img onerror="this.src='img/book.png'" src="img/${book.imgUrl}" alt="book cover"> `;
     elReadModal.classList.add('open');
-    gReadBookId = bookId;
-    doTrans();
 }
 
 function onOpenUpdateBookModal(bookId) {
     document.querySelector('.update-modal').classList.toggle('open');
-    gUpdatedBookId = bookId;
+    setUpdatedBookId(bookId);
 }
 
 function onChangeRate(diff) {
@@ -113,6 +119,8 @@ function onCloseAddModal() {
 
 function onCloseReadModal() {
     document.querySelector('.read-modal').classList.remove('open');
+    setReadModalStat(false);
+    setQueryParams();
 }
 
 function onCloseUpdateModal() {
@@ -121,25 +129,35 @@ function onCloseUpdateModal() {
 
 function renderFilterByQueryStringParams() {
     const queryStringParams = new URLSearchParams(window.location.search);
-    var filterBy = gFilterBy;
+    var currLang = getCurrLang();
+    currLang = queryStringParams.get('lang') || 'en';
+    var readModalStat = getReadModalStat();
+    readModalStat = queryStringParams.get('modal') || 'false';
+    var filterBy = getFilterBy();
     filterBy = {
         maxPrice: queryStringParams.get('maxPrice') || 100,
         minRate: +queryStringParams.get('minRate') || 0,
         txt: queryStringParams.get('txt') || '',
     };
-
     if (!filterBy.maxPrice && !filterBy.minSpeed && !filterBy.txt) return;
 
     document.querySelector('.filter-price-range').value = filterBy.maxPrice;
     document.querySelector('.filter-rate-range').value = filterBy.minRate;
     setBookFilter(filterBy);
     document.querySelector('.search').value = filterBy.txt;
+    document.querySelector('select').value = currLang;
+    console.log(readModalStat);
+    console.log(getReadModalStat());
+    if (getReadModalStat()) renderReadBook(getReadBookId());
+    else onCloseAddModal();
+    setLang(currLang);
 }
 
 function renderBooks() {
     var books = getBooksForDisplay();
     var strHTML = getStrHTML(books);
     document.querySelector('.books-container').innerHTML = strHTML;
+    doTrans();
 }
 
 function getStrHTML(books) {
@@ -150,11 +168,17 @@ function getStrHTML(books) {
                     <td>${book.id}</td>
                     <td>${book.rate}</td>
                     <td>${book.name}</td>
-                    <td>${book.price}$</td>
+                    <td>${getPrice(book.price)}</td>
                     <td class="action-btns">
-                         <button class="read-btn" onclick="onReadBook('${book.id}')" data-trans="read-btn">Read</button>
-                         <button class="update-btn" onclick="onOpenUpdateBookModal('${book.id}')" data-trans="update-btn">Update</button>
-                         <button class="delete-btn" onclick="onDeleteBook('${book.id}')" data-trans="delete-btn">Delete</button>
+                         <button class="read-btn" onclick="onReadBook('${
+                             book.id
+                         }')" data-trans="read-btn">Read</button>
+                         <button class="update-btn" onclick="onOpenUpdateBookModal('${
+                             book.id
+                         }')" data-trans="update-btn">Update</button>
+                         <button class="delete-btn" onclick="onDeleteBook('${
+                             book.id
+                         }')" data-trans="delete-btn">Delete</button>
                     </td>
                 </tr>
     `
@@ -180,21 +204,29 @@ function getStrHTML(books) {
                     <article class="book-card">  
                     <h4>${book.name}</h4>
                     <div class="img-container">
-                        <img onerror="this.src='img/book.png'" src="img/${book.imgUrl}" alt="book cover">
+                        <img onerror="this.src='img/book.png'" src="img/${
+                            book.imgUrl
+                        }" alt="book cover">
                     </div>
-                    <p class="price" data-trans="read-price">Price: $<span>${book.price}</span></p>
-                    <p class="rating" data-trans="rate-cards">Rating: <span>${book.rate}</span></p>
+                    <p class="price" data-trans="read-price">Price:</p>
+                    <p>${getPrice(book.price)}</p>
+                    <p class="rating" data-trans="rate-cards">Rating:</p>
+                    <p>${book.rate}</p>
                     <button class="read-btn" onclick="onReadBook('${book.id}')"
                     data-trans="read-btn">
                     Read
                     </button>
                     <button
                         class="update-btn"
-                        onclick="onOpenUpdateBookModal('${book.id}')" data-trans="update-btn"
+                        onclick="onOpenUpdateBookModal('${
+                            book.id
+                        }')" data-trans="update-btn"
                     >
                     Update
                     </button>
-                    <button class="delete-btn" onclick="onDeleteBook('${book.id}')" data-trans="delete-btn">
+                    <button class="delete-btn" onclick="onDeleteBook('${
+                        book.id
+                    }')" data-trans="delete-btn">
                         Delete
                     </button>
                     </article>            
@@ -213,13 +245,13 @@ function getStrHTML(books) {
 function onNextPage() {
     nextPage();
     renderBooks();
-    doTrans();
+    // doTrans();
 }
 
 function onPrevPage() {
     prevPage();
     renderBooks();
-    doTrans();
+    // doTrans();
 }
 
 function updatePageDisplay(pageIdx) {
@@ -247,6 +279,7 @@ function onSwitchDisplay(elBtn) {
         .forEach((btn) => btn.classList.toggle('selected'));
     gSwitchDisplay = elBtn.id;
     renderBooks();
+    // doTrans();
 }
 
 function showPagingPanel() {
@@ -260,11 +293,15 @@ function hidePagingPanel() {
 function onSetLang(lang) {
     setLang(lang);
     setDirection(lang);
+    setQueryParams();
     renderBooks();
-    doTrans();
 }
 
 function setDirection(lang) {
     if (lang === 'he') document.body.classList.add('rtl');
     else document.body.classList.remove('rtl');
+}
+
+function onCopyURL() {
+    navigator.clipboard.writeText(window.location.href);
 }
